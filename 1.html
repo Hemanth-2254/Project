@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library System</title>
+    <style>
+        /* Global Styles */
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20;
+            padding: 30;
+            background-image: -moz-repeating-linear-gradient();
+            align-items: center;
+            background-color: #ECD4FF;
+        }
+        
+        h1,
+        h2 {
+            color: #034184;
+        }
+        
+        .container {
+            max-width: 50%;
+            margin: auto;
+            align-items: auto;
+            padding: 10px;
+        }
+        
+        section,
+        .form-container {
+            background: #d4a2fd;
+            padding: 50px;
+            align-items: center;
+            margin: 40px 0;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        input,
+        button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            align-items: center;
+            border: 1px solid #fff;
+            border-radius: 3px;
+        }
+        
+        button {
+            background: #316ede;
+            color: white;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background: #8FA3FF;
+        }
+        
+        #library-system,
+        #signup-form,
+        #forgot-password {
+            display: none;
+            /* Initially hidden */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Login Section -->
+    <div class="form-container" id="login-form">
+        <h2>Library Login</h2>
+        <form onsubmit="return loginUser(event)">
+            <input type="text" id="username" placeholder="Enter Username" required>
+            <input type="password" id="password" placeholder="Enter Password" required>
+            <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account? <a href="#" onclick="showSignup()">Sign up</a></p>
+        <p><a href="#" onclick="showForgotPassword()">Forgot password?</a></p>
+    </div>
+
+    <!-- Sign-Up Section -->
+    <div class="form-container" id="signup-form">
+        <h2>Sign Up</h2>
+        <form onsubmit="return signupUser(event)">
+            <input type="text" id="new-username" placeholder="Enter New Username" required>
+            <input type="password" id="new-password" placeholder="Enter New Password" required>
+            <input type="email" id="email" placeholder="Enter Email Address" required>
+            <button type="submit">Sign Up</button>
+        </form>
+        <p>Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
+    </div>
+
+    <!-- Forgot Password Section -->
+    <div class="form-container" id="forgot-password">
+        <h2>Forgot Password</h2>
+        <form onsubmit="return resetPassword(event)">
+            <input type="email" id="reset-email" placeholder="Enter Registered Email" required>
+            <button type="submit">Reset Password</button>
+        </form>
+        <p>Remembered your password? <a href="#" onclick="showLogin()">Login</a></p>
+    </div>
+
+    <!-- Library Management System -->
+    <div id="library-system">
+        <header>
+            <h1>College Library Management System</h1>
+        </header>
+
+        <div class="container">
+            <!-- View Books Section -->
+            <section id="view-books">
+                <h2>Available Books</h2>
+                <button onclick="viewBooks()">View All Books</button>
+                <ul id="books-list"></ul>
+            </section>
+
+            <!-- Add Book Section -->
+            <section id="add-book">
+                <h2>Add a Book</h2>
+                <input type="text" id="book-name" placeholder="Book Name">
+                <input type="number" id="book-copies" placeholder="Number of Copies">
+                <button onclick="addBook()">Add Book</button>
+            </section>
+
+            <!-- Issue Book Section -->
+            <section id="issue-book">
+                <h2>Issue a Book</h2>
+                <input type="text" id="issue-book-name" placeholder="Book Name">
+                <input type="text" id="student-name" placeholder="Student Name">
+                <input type="number" id="student-id" placeholder="Student ID">
+                <button onclick="issueBook()">Issue Book</button>
+            </section>
+
+            <!-- Return Book Section -->
+            <section id="return-book">
+                <h2>Return a Book</h2>
+                <input type="text" id="return-book-name" placeholder="Book Name">
+                <input type="text" id="return-student-name" placeholder="Student Name">
+                <input type="number" id="return-student-id" placeholder="Student ID">
+                <button onclick="returnBook()">Return Book</button>
+            </section>
+
+            <!-- Display Students Section -->
+            <section id="display-students">
+                <h2>Display All Books by Students</h2>
+                <button onclick="displayAllStudents()">Display Student Books</button>
+            </section>
+            <!-- Change Password Section -->
+            <section id="change-password">
+                <h2>Change Password</h2>
+                <form onsubmit="return changePassword(event)">
+                    <input type="password" id="current-password" placeholder="Current Password" required>
+                    <input type="password" id="new-password" placeholder="New Password" required>
+                    <button type="submit">Change Password</button>
+                </form>
+                <button onclick="showChangePassword()">Change Password</button>
+            </section>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        function showSignup() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('signup-form').style.display = 'block';
+        }
+
+        function showLogin() {
+            document.getElementById('signup-form').style.display = 'none';
+            document.getElementById('forgot-password').style.display = 'none';
+            document.getElementById('login-form').style.display = 'block';
+        }
+
+        function showForgotPassword() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('forgot-password').style.display = 'block';
+        }
+
+        function loginUser(event) {
+            event.preventDefault(); // Prevent form submission
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Dummy Validation
+            if (username === "admin" && password === "1234") {
+                alert("Login successful!");
+                document.getElementById('login-form').style.display = 'none';
+                document.getElementById('library-system').style.display = 'block';
+            } else {
+                alert("Invalid username or password. Please try again.");
+            }
+        }
+
+        function signupUser(event) {
+            event.preventDefault(); // Prevent form submission
+            alert("Sign-up feature coming soon!");
+            showLogin();
+        }
+
+        function resetPassword(event) {
+            event.preventDefault(); // Prevent form submission
+            alert("Password reset feature coming soon!");
+            showLogin();
+        }
+
+        function viewBooks() {
+            alert("Viewing all books! (Placeholder)");
+        }
+
+        function addBook() {
+            alert("Adding a book! (Placeholder)");
+        }
+
+        function issueBook() {
+            alert("Issuing a book! (Placeholder)");
+        }
+
+        function returnBook() {
+            alert("Returning a book! (Placeholder)");
+        }
+
+        function displayAllStudents() {
+            alert("Displaying student books! (Placeholder)");
+        }
+
+        function loginUser(event) {
+            event.preventDefault(); // Prevent form submission
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Retrieve user data from localStorage
+            const userData = JSON.parse(localStorage.getItem('user-' + username));
+
+            if (userData && userData.password === password) {
+                alert("Login successful!");
+                document.getElementById('login-form').style.display = 'none';
+                document.getElementById('library-system').style.display = 'block';
+            } else {
+                alert("Invalid username or password. Please try again.");
+            }
+        }
+
+        function changePassword(event) {
+            event.preventDefault(); // Prevent form submission
+
+            const username = prompt("Enter your username:");
+            const currentPassword = document.getElementById('current-password').value;
+            const newPassword = document.getElementById('new-password').value;
+
+            // Retrieve user data from localStorage
+            const userData = JSON.parse(localStorage.getItem('user-' + username));
+
+            if (userData && userData.password === currentPassword) {
+                // Update password in localStorage
+                userData.password = newPassword;
+                localStorage.setItem('user-' + username, JSON.stringify(userData));
+
+                alert("Password changed successfully!");
+            } else {
+                alert("Current password is incorrect. Please try again.");
+            }
+        }
+    </script>
+
+</body>
+
+</html>
